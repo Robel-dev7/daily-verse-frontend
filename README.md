@@ -1,2 +1,57 @@
-# daily-verse-frontend
-This Django-based web application delivers a daily Bible verse to users using the open and free HelloAO Bible API. The project is designed to provide consistent, reliable access to daily scripture with minimal setup and maximum flexibility.
+# 📖 Daily Bible Verse – Frontend (React)
+
+This is the **React-based frontend** for the Daily Bible Verse project. It connects to a Django REST API to display daily Bible verses, allow keyword search, view chapters, access commentary, and more — built for a church-focused spiritual web experience.
+
+---
+
+## 🌐 Live Demo
+
+> Coming Soon 
+
+---
+
+## 📦 Tech Stack
+
+- ⚛️ React
+- 🎨 Tailwind CSS (or your chosen styling tool)
+- 🔗 Axios / Fetch API
+- 🌍 Connects to Django backend (REST API)
+
+---
+
+## 🚀 Features
+
+- 📅 **Daily Verse Display**
+- 🔍 **Keyword Search** (faith, love, etc.)
+- 📚 **Full Chapter Viewer**
+- ✨ **Random Verse**
+- 📝 **Commentary Support**
+- 🗂️ **Verse Archive by Date**
+- 🔄 **Translation Selection (KJV,NIV, etc.)**
+
+# Folder Structure
+/src
+├── components/
+│   ├── VerseCard.tsx
+│   ├── SearchBar.tsx
+│   ├── ChapterViewer.tsx
+│   ├── VerseDetails.tsx
+│   ├── Footer.tsx
+│   ├── Lightning.css
+│   ├── Lightning.tsx
+│   ├── Navigation.tsx
+│   └── CommentaryViewer.tsx
+├── pages/
+│   ├── Home.tsx
+│   ├── Search.tsx
+│   ├── Chapter.tsx
+│   ├── Verse.tsx
+│   ├── Archive.tsx
+│   ├── Commentary.tsx
+│   └── Random.tsx
+├── utils/
+│   └── api.ts
+├── App.tsx
+├── index.css
+└── main.tsx
+
