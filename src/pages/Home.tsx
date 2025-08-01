@@ -1,7 +1,9 @@
+
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import VerseCard from '../components/VerseCard';
 import { Calendar, RefreshCw } from 'lucide-react';
+import { fetchDailyVerse } from '../utils/api';
 
 
 type TranslationKey = 'kjv' | 'amharic1954' | 'amharic-new';
@@ -21,45 +23,24 @@ const Home = () => {
   const [dailyVerse, setDailyVerse] = useState<DailyVerse | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Mock daily verse data
-  const mockDailyVerses: Record<TranslationKey, DailyVerse> = {
-    kjv: {
-      text: "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
-      reference: "John 3:16",
-      book: "John",
-      chapter: 3,
-      verse: 16,
-      translation: 'kjv',
-      date: new Date().toLocaleDateString()
-    },
-    amharic1954: {
-      text: "እናንተም ደግሞ የእውነትን ቃል፥ ይኸውም የመዳናችሁን ወንጌል፥ ሰምታችሁ ደግሞም በክርስቶስ አምናችሁ፥ በተስፋው መንፈስ በመንፈስ ቅዱስ ታተማችሁ፤",
-      reference: "ወደ ኤፌሶን ሰዎች 1:13",
-      book: "ኤፌሶን",
-      chapter: 1,
-      verse: 13,
-      translation: 'amharic1954',
-      date: new Date().toLocaleDateString()
-    },
-    'amharic-new': {
-      text: "ዳግመኛ የተወለዳችሁት ከሚጠፋ ዘር ሳይሆን፣ ሕያው በሆነና ጸንቶ በሚኖር በእግዚአብሔር ቃል አማካይነት ከማይጠፋ ዘር ነው።",
-      reference: "1 ጴጥሮስ 1:23",
-      book: "1 ጴጥሮስ",
-      chapter: 1,
-      verse: 23,
-      translation: 'amharic-new',
-      date: new Date().toLocaleDateString()
-    }
-  };
+
 
   useEffect(() => {
-    // Simulate API call
-    setLoading(true);
-    setTimeout(() => {
-      const verse = mockDailyVerses[translation] || mockDailyVerses.kjv;
-      setDailyVerse(verse);
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchDailyVerse(translation);
+        // The backend returns { reference, text, translation, book, chapter, verse }
+        setDailyVerse({
+          ...data,
+          date: new Date().toLocaleDateString(),
+        });
+      } catch (error) {
+        setDailyVerse(null);
+      }
       setLoading(false);
-    }, 500);
+    };
+    fetchData();
   }, [translation]);
 
   const handleTranslationChange = (newTranslation: string) => {

@@ -1,60 +1,66 @@
-import React, { useState, useEffect } from 'react';
+
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import VerseCard from '../components/VerseCard';
 import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { fetchArchive } from '../utils/api';
+
+
+interface ArchiveEntry {
+  date: string;
+  verse: {
+    text: string;
+    reference: string;
+    book: string;
+    chapter: number;
+    verse: number;
+    translation: string;
+  };
+}
 
 const Archive = () => {
   const { year, month } = useParams();
-  const [archiveData, setArchiveData] = useState([]);
+  const [archiveData, setArchiveData] = useState<ArchiveEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
   const currentYear = parseInt(year || '2025');
   const currentMonth = parseInt(month || '1');
 
-  // Mock archive data
-  const mockArchiveData = [
-    {
-      date: '2025-01-01',
-      verse: {
-        text: "Therefore if any man be in Christ, he is a new creature: old things are passed away; behold, all things are become new.",
-        reference: "2 Corinthians 5:17",
-        book: "2 Corinthians",
-        chapter: 5,
-        verse: 17,
-        translation: "kjv"
-      }
-    },
-    {
-      date: '2025-01-02',
-      verse: {
-        text: "Trust in the Lord with all thine heart; and lean not unto thine own understanding.",
-        reference: "Proverbs 3:5",
-        book: "Proverbs",
-        chapter: 3,
-        verse: 5,
-        translation: "kjv"
-      }
-    },
-    {
-      date: '2025-01-03',
-      verse: {
-        text: "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
-        reference: "John 3:16",
-        book: "John",
-        chapter: 3,
-        verse: 16,
-        translation: "kjv"
-      }
-    }
-  ];
+
 
   useEffect(() => {
-    setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setArchiveData(mockArchiveData);
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        if (year && month) {
+          const yearNum = Number(year);
+          const monthNum = Number(month);
+          const data = await fetchArchive(monthNum, yearNum);
+          // The backend returns an array of entries with date_shown, reference, text, translation, book, etc.
+          // Map to ArchiveEntry[]
+          const mapped = Array.isArray(data)
+            ? data.map((entry: any) => ({
+                date: entry.date_shown,
+                verse: {
+                  text: entry.text,
+                  reference: entry.reference,
+                  book: entry.book,
+                  chapter: entry.chapter || 1,
+                  verse: entry.verse || 1,
+                  translation: entry.translation,
+                },
+              }))
+            : [];
+          setArchiveData(mapped);
+        } else {
+          setArchiveData([]);
+        }
+      } catch (error) {
+        setArchiveData([]);
+      }
       setLoading(false);
-    }, 500);
+    };
+    fetchData();
   }, [year, month]);
 
   const monthNames = [

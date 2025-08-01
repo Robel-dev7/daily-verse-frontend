@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+
+import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Search as SearchIcon, BookOpen, MessageSquare } from 'lucide-react';
 import SearchBar from '../components/SearchBar';
+import { searchVerses } from '../utils/api';
 
 const Search: React.FC = () => {
   const navigate = useNavigate();
@@ -11,71 +13,30 @@ const Search: React.FC = () => {
   const [translation, setTranslation] = useState('kjv');
   const [query, setQuery] = useState(searchParams.get('q') || '');
 
-  // Mock search results
-  const mockResults = {
-    faith: [
-      {
-        text: "Now faith is the substance of things hoped for, the evidence of things not seen.",
-        reference: "Hebrews 11:1",
-        book: "Hebrews",
-        chapter: 11,
-        verse: 1
-      },
-      {
-        text: "So then faith cometh by hearing, and hearing by the word of God.",
-        reference: "Romans 10:17",
-        book: "Romans",
-        chapter: 10,
-        verse: 17
-      }
-    ],
-    love: [
-      {
-        text: "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
-        reference: "John 3:16",
-        book: "John",
-        chapter: 3,
-        verse: 16
-      },
-      {
-        text: "Beloved, let us love one another: for love is of God; and every one that loveth is born of God, and knoweth God.",
-        reference: "1 John 4:7",
-        book: "1 John",
-        chapter: 4,
-        verse: 7
-      }
-    ],
-    hope: [
-      {
-        text: "For I know the thoughts that I think toward you, saith the LORD, thoughts of peace, and not of evil, to give you an expected end.",
-        reference: "Jeremiah 29:11",
-        book: "Jeremiah",
-        chapter: 29,
-        verse: 11
-      }
-    ]
-  };
+
+
 
   const performSearch = async (searchQuery: string) => {
     if (!searchQuery.trim()) {
       setResults([]);
       return;
     }
-
     setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      const searchResults = mockResults[searchQuery.toLowerCase() as keyof typeof mockResults] || [];
-      setResults(searchResults);
-      setLoading(false);
-    }, 500);
+    try {
+      const data = await searchVerses(searchQuery, translation);
+      setResults(Array.isArray(data) ? data : []);
+    } catch (error) {
+      setResults([]);
+    }
+    setLoading(false);
   };
 
   useEffect(() => {
     if (query) {
       performSearch(query);
     }
-  }, [query]);
+    // eslint-disable-next-line
+  }, [query, translation]);
 
   const handleSearch = (searchQuery: string) => {
     setQuery(searchQuery);
@@ -107,7 +68,7 @@ const Search: React.FC = () => {
         </div>
 
         <div className="mb-6 sm:mb-8">
-          <SearchBar onSearch={handleSearch} initialQuery={query} />
+          <SearchBar onSearch={handleSearch} />
         </div>
 
         <div className="mb-4 sm:mb-6">

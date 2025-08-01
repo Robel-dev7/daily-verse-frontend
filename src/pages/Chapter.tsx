@@ -1,7 +1,9 @@
+
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import ChapterViewer from '../components/ChapterViewer';
 import { RefreshCw } from 'lucide-react';
+import { fetchChapter } from '../utils/api';
 
 
 interface ChapterData {
@@ -19,42 +21,26 @@ const Chapter = () => {
   const [chapterData, setChapterData] = useState<ChapterData | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Mock chapter data
-  const mockChapterData = {
-    book: book || 'Genesis',
-    chapter: parseInt(chapter || '1'),
-    translation: translation || 'kjv',
-    verses: [
-      {
-        verse: 1,
-        text: "In the beginning God created the heaven and the earth."
-      },
-      {
-        verse: 2,
-        text: "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters."
-      },
-      {
-        verse: 3,
-        text: "And God said, Let there be light: and there was light."
-      },
-      {
-        verse: 4,
-        text: "And God saw the light, that it was good: and God divided the light from the darkness."
-      },
-      {
-        verse: 5,
-        text: "And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day."
-      }
-    ]
-  };
+
 
   useEffect(() => {
-    setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setChapterData(mockChapterData);
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        if (translation && book && chapter) {
+          const chapterNum = Number(chapter);
+          const data = await fetchChapter(translation, book, chapterNum);
+          // The backend returns { book, chapter, verses, translation }
+          setChapterData(data);
+        } else {
+          setChapterData(null);
+        }
+      } catch (error) {
+        setChapterData(null);
+      }
       setLoading(false);
-    }, 500);
+    };
+    fetchData();
   }, [translation, book, chapter]);
 
   if (loading) {

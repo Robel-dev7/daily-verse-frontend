@@ -1,62 +1,39 @@
-import React, { useState, useEffect } from 'react';
+
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RefreshCw, BookOpen, MessageSquare } from 'lucide-react';
+import { fetchRandomVerse } from '../utils/api';
 
 const Random: React.FC = () => {
   const navigate = useNavigate();
+
   const [verse, setVerse] = useState<any>(null);
   const [translation, setTranslation] = useState('kjv');
   const [loading, setLoading] = useState(false);
 
-  // Mock verses for different translations
-  const mockVerses = {
-    kjv: {
-      text: "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
-      reference: "John 3:16",
-      book: "John",
-      chapter: 3,
-      verse: 16
-    },
-    niv: {
-      text: "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.",
-      reference: "John 3:16",
-      book: "John",
-      chapter: 3,
-      verse: 16
-    },
-    'amharic1954': {
-      text: "እናንተም ደግሞ የእውነትን ቃል፥ ይኸውም የመዳናችሁን ወንጌል፥ ሰምታችሁ ደግሞም በክርስቶስ አምናችሁ፥ በተስፋው መንፈስ በመንፈስ ቅዱስ ታተማችሁ፤",
-      reference: "ወደ ኤፌሶን ሰዎች 1:13",
-      book: "Ephesians",
-      chapter: 1,
-      verse: 13
-    },
-    'amharic-new': {
-      text: "ዳግመኛ የተወለዳችሁት ከሚጠፋ ዘር ሳይሆን፣ ሕያው በሆነና ጸንቶ በሚኖር በእግዚአብሔር ቃል አማካይነት ከማይጠፋ ዘር ነው።",
-      reference: "1 ጴጥሮስ 1:23",
-      book: "1 Peter",
-      chapter: 1,
-      verse: 23
+
+  const getRandomVerse = async (selectedTranslation: string) => {
+    setLoading(true);
+    try {
+      const data = await fetchRandomVerse(selectedTranslation);
+      setVerse({
+        ...data,
+        reference: data.reference || `${data.book} ${data.chapter}:${data.verse}`
+      });
+    } catch (error) {
+      setVerse(null);
     }
+    setLoading(false);
   };
 
-  const fetchRandomVerse = async () => {
-    setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      const randomVerses = Object.values(mockVerses);
-      const randomVerse = randomVerses[Math.floor(Math.random() * randomVerses.length)];
-      setVerse(randomVerse);
-      setLoading(false);
-    }, 500);
-  };
 
   useEffect(() => {
-    fetchRandomVerse();
-  }, []);
+    getRandomVerse(translation);
+    // eslint-disable-next-line
+  }, [translation]);
 
   const handleNewVerse = () => {
-    fetchRandomVerse();
+    getRandomVerse(translation);
   };
 
   const handleReadChapter = () => {

@@ -1,37 +1,37 @@
-import React, { useState, useEffect } from 'react';
+
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import VerseDetails from '../components/VerseDetails';
 import { RefreshCw } from 'lucide-react';
+import { fetchVerse } from '../utils/api';
 
 const Verse = () => {
   const { translation, book, chapter, verse } = useParams();
-  const [verseData, setVerseData] = useState(null);
+
+  const [verseData, setVerseData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  // Mock verse data
-  const mockVerseData = {
-    text: "In the beginning God created the heaven and the earth.",
-    reference: `${book} ${chapter}:${verse}`,
-    book: book || 'Genesis',
-    chapter: parseInt(chapter || '1'),
-    verse: parseInt(verse || '1'),
-    translation: translation || 'kjv'
-  };
-
-  const mockContext = {
-    nextVerse: {
-      verse: parseInt(verse || '1') + 1,
-      text: "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters."
-    }
-  };
-
   useEffect(() => {
-    setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setVerseData(mockVerseData);
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        if (translation && book && chapter && verse) {
+          const chapterNum = Number(chapter);
+          const verseNum = Number(verse);
+          const data = await fetchVerse(translation, book, chapterNum, verseNum);
+          setVerseData({
+            ...data,
+            reference: data.reference || `${book} ${chapter}:${verse}`,
+          });
+        } else {
+          setVerseData(null);
+        }
+      } catch (error) {
+        setVerseData(null);
+      }
       setLoading(false);
-    }, 500);
+    };
+    fetchData();
   }, [translation, book, chapter, verse]);
 
   if (loading) {
@@ -50,7 +50,7 @@ const Verse = () => {
     );
   }
 
-  return <VerseDetails verse={verseData} context={mockContext} />;
+  return <VerseDetails verse={verseData} />;
 };
 
 export default Verse;
