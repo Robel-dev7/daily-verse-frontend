@@ -14,7 +14,7 @@ This is the **React-based frontend** for the Daily Bible Verse project. It conne
 
 - ⚛️ React
 - 🎨 Tailwind CSS
-- 🔗 Axios / Fetch API
+- 🔗 Fetch API
 - 🌍 Connects to Django backend (REST API)
 
 ---
