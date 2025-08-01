@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Amharic font support */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@300;400;500;600;700&display=swap');
+
+/* Custom styles for Amharic text */
+.amharic-text {
+  font-family: 'Noto Sans Ethiopic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.8;
+  direction: ltr;
+}
+
+/* Responsive typography */
+@media (max-width: 640px) {
+  .verse-text {
+    font-size: 1.125rem;
+    line-height: 1.75;
+  }
+  
+  .verse-reference {
+    font-size: 0.875rem;
+  }
+}
+
+/* Mobile navigation improvements */
+@media (max-width: 768px) {
+  .mobile-nav {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .mobile-nav::-webkit-scrollbar {
+    display: none;
+  }
+}
