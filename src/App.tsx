@@ -11,9 +11,9 @@ import Navigation from './components/Navigation';
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 pb-safe">
+      <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-50 to-blue-50 pb-safe">
         <Navigation />
-        <main className="container mx-auto px-2 sm:px-4 py-4 md:py-8">
+        <main className="container mx-auto px-2 sm:px-4 py-4 md:py-8 flex-1">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/search" element={<Search />} />
@@ -24,6 +24,20 @@ function App() {
             <Route path="/random" element={<Random />} />
           </Routes>
         </main>
+        <footer className="w-full py-4 bg-white/80 border-t border-slate-200 text-center shadow-sm">
+          <span className="text-slate-600 text-sm">
+            Developed by{' '}
+            <a
+              href="https://www.instagram.com/astuecsf2k19/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline hover:text-blue-800 transition-colors font-semibold"
+            >
+              ASTUECSF
+            </a>{' '}
+            DS Programming Team
+          </span>
+        </footer>
       </div>
     </Router>
   );
