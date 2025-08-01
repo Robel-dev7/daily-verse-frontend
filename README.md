@@ -13,7 +13,7 @@ This is the **React-based frontend** for the Daily Bible Verse project. It conne
 ## 📦 Tech Stack
 
 - ⚛️ React
-- 🎨 Tailwind CSS (or your chosen styling tool)
+- 🎨 Tailwind CSS
 - 🔗 Axios / Fetch API
 - 🌍 Connects to Django backend (REST API)
 
@@ -22,7 +22,7 @@ This is the **React-based frontend** for the Daily Bible Verse project. It conne
 ## 🚀 Features
 
 - 📅 **Daily Verse Display**
-- 🔍 **Keyword Search** (faith, love, etc.)
+- 🔍 **Keyword Search**
 - 📚 **Full Chapter Viewer**
 - ✨ **Random Verse**
 - 📝 **Commentary Support**
