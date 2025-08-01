@@ -30,6 +30,7 @@ This is the **React-based frontend** for the Daily Bible Verse project. It conne
 - 🔄 **Translation Selection (KJV,NIV, etc.)**
 
 # Folder Structure
+<pre>
 /src
 ├── components/
 │   ├── VerseCard.tsx
@@ -54,4 +55,4 @@ This is the **React-based frontend** for the Daily Bible Verse project. It conne
 ├── App.tsx
 ├── index.css
 └── main.tsx
-
+</pre>
