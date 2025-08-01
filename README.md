@@ -6,7 +6,7 @@ This is the **React-based frontend** for the Daily Bible Verse project. It conne
 
 ## 🌐 Live Demo
 
-> Coming Soon 
+> <a href="https://daily-scripture.netlify.app/">Live</a>
 
 ---
 
@@ -38,8 +38,6 @@ This is the **React-based frontend** for the Daily Bible Verse project. It conne
 │   ├── ChapterViewer.tsx
 │   ├── VerseDetails.tsx
 │   ├── Footer.tsx
-│   ├── Lightning.css
-│   ├── Lightning.tsx
 │   ├── Navigation.tsx
 │   └── CommentaryViewer.tsx
 ├── pages/
